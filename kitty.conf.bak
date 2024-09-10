@@ -1,5 +1,5 @@
 # BEGIN_KITTY_THEME
-# Tokyo Night Moon
+# Tokyo Night Storm
 include current-theme.conf
 # END_KITTY_THEME
 
@@ -8,7 +8,11 @@ font_family IosevkaTerm NF Bold
 bold_font IosevkaTerm NF Heavy
 italic_font IosevkaTerm NF Bold Oblique
 bold_italic_font IosevkaTerm NF Heavy Oblique
-font_size 15.5
+font_size 15
+
+# Title Bar
+# wayland_titlebar_color #191724
+# macos_titlebar_color #191724
 
 # Window
 remember_window_size no
@@ -16,27 +20,8 @@ initial_window_width  1920
 initial_window_height 1080
 enabled_layouts tall:bias=50;full_size=1;mirrored=false
 placement_strategy center
-hide_window_decorations no
-window_border_width 1
-wayland_titlebar_color #1e2030
-window_logo_path none
-window_logo_position center
-
-map alt+h neighboring_window left
-map alt+j neighboring_window down
-map alt+k neighboring_window up
-map alt+l neighboring_window right
 
 # Tabs
 tab_bar_edge top
 tab_bar_style powerline
 tab_fade 0.25 0.5 0.75 1
-
-# Performance
-input_delay 0
-repaint_delay 2
-sync_to_monitor no
-wayland_enable_ime no
-
-# Mouse
-copy_on_select yes

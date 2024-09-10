@@ -5,124 +5,55 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
-
-# Path to your Oh My Zsh installation.
+# Path
 export ZSH="$HOME/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# Themes
 ZSH_THEME="fwalch"
 #ZSH_THEME="arrow"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
+# Plugins
 plugins=(git npm systemd postgres gitignore docker docker-compose sudo aliases vscode ubuntu snap golang)
 
 source $ZSH/oh-my-zsh.sh
 
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by Oh My Zsh libs,
-# plugins, and themes. Aliases can be placed here, though Oh My Zsh
-# users are encouraged to define aliases within a top-level file in
-# the $ZSH_CUSTOM folder, with .zsh extension. Examples:
-# - $ZSH_CUSTOM/aliases.zsh
-# - $ZSH_CUSTOM/macos.zsh
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
+# ---------------------------------------------------------------------------------------- #
 # General
+# ------------------------------------------- #
 port() {sudo lsof -i :"$1"}
 
-alias zshrc='nvim ~/.zshrc'
-alias kittyrc='nvim ~/.config/kitty/kitty.conf'
-alias vimrc="cd ~/.config/nvim"
+function cpbase64() {
+	if [ -z "$1" ]; then
+		echo "Usage: cpbase64 <file_to_encode>"
+	else base64 -w 0 "$1" | xclip -selection clipboard
+		echo "Encoded and copied"
+	fi
+}
 
-alias szshrc="source ~/.zshrc"
-
+# ------------------------------------------- #
+# Basic Aliases
+# ------------------------------------------- #
 alias sdn='shutdown now'
 
+alias zshrc='nvim ~/.zshrc'
+alias szshrc="source ~/.zshrc"
+
+alias vimrc="cd ~/.config/nvim"
+alias kittyrc='cd ~/.config/kitty'
+alias tmuxrc="nvim ~/.tmux.conf"
+
+alias font-reload='fc-cache -fv'
+alias filex='xdg-open .'
+
+# ------------------------------------------- #
+# Projects
+# ------------------------------------------- #
+alias insin-backend='cd /home/rvstank/projects/backend/js/insin-backend'
+alias omniapi='cd /home/rvstank/projects/backend/python/omniapi'
+
+# ------------------------------------------- #
+# Vim/Terminal
+# ------------------------------------------- #
 function vim() {
     if [ "$#" -eq 0 ]; then
 nvim "$PWD"
@@ -131,10 +62,45 @@ nvim "$@"
     fi
 }
 
-alias font-reload='fc-cache -fv'
+function ctrl_z_to_fg() {
+    fg
+}
+zle -N ctrl_z_to_fg
+bindkey '^Z' ctrl_z_to_fg
 
-# Git
+# ------------------------------------------- #
+# Git/GitHub/GitLab
+# ------------------------------------------- #
 alias gdn='gd --name-only'
+alias gpom='git push -u origin main'
+
+function repo-init() {
+    if [ -z "$1" ]; then
+        echo "Usage: init-repo <repository-name>"
+        return 1
+    fi
+    local repo_name=$1
+
+    git init || { echo "Failed to initialize git repository"; return 1; }
+
+    gaa
+    gcam "init" || { echo "Failed to commit changes"; return 1; }
+    git branch -M main
+
+    if command -v gh >/dev/null 2>&1; then
+        gh repo create "RVStank/$repo_name" --private --source=. --remote=origin || {
+            echo "Failed to create GitHub repository";
+            return 1;
+        }
+    else
+        echo "GitHub CLI not found, make sure the repository exists on GitHub."
+    fi
+
+    gpom || {
+        echo "Failed to push to remote repository";
+        return 1;
+    }
+}
 
 function gitlab-mr-push() {
     if [ -z "$1" ] || [ -z "$2" ]; then
@@ -146,20 +112,25 @@ function gitlab-mr-push() {
     git push -o merge_request.create -o merge_request.target="$target_branch" -u origin "$branch_name"
 }
 
-
-# Directories
-alias opencd='xdg-open .'
-
-#Docker
+# ------------------------------------------- #
+# Docker
+# ------------------------------------------- #
 alias docker-clear-all='docker stop $(docker ps -aq) && docker rm $(docker ps -aq) && docker rmi $(docker images -q) && docker volume rm $(docker volume ls -qf dangling=true)'
 
+# ------------------------------------------- #
 # Python3
+# ------------------------------------------- #
 alias py="python3"
 alias pip="py -m pip"
 alias pyvenv-create="py -m venv .venv"
 alias pyvenv="source .venv/bin/activate"
 alias pipfreeze="pip freeze > requirements.txt"
+alias pipreq="pip install -r requirements.txt"
 
+
+# ---------------------------------------------------------------------------------------- #
+# Configs
+# ------------------------------------------- #
 source /home/rvstank/projects/customizations/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 export NVM_DIR="$HOME/.nvm"
@@ -168,3 +139,9 @@ export NVM_DIR="$HOME/.nvm"
 
 PATH="$HOME/.local/bin:$PATH"
 fpath+=${ZDOTDIR:-~}/.zsh_functions
+
+export PATH=$PATH:/home/rvstank/.spicetify
+export KITTY_ENABLE_WAYLAND=1
+
+export WAYLAND_DISPLAY=wayland-0
+export DISPLAY=:0
